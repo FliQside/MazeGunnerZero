@@ -2,7 +2,7 @@
 
 namespace CompleteProject
 {
-    public class PlayerShoot : MonoBehaviour
+    public class PlayerShooting : MonoBehaviour
     {
         public int damagePerShot = 20;                  // The damage inflicted by each bullet.
         public float timeBetweenBullets = 0.15f;        // The time between each shot.
@@ -16,7 +16,7 @@ namespace CompleteProject
         ParticleSystem gunParticles;                    // Reference to the particle system.
         LineRenderer gunLine;                           // Reference to the line renderer.
         AudioSource gunAudio;                           // Reference to the audio source.
-        public Light gunLight;                                 // Reference to the light component.
+        Light gunLight;                                 // Reference to the light component.
         public Light faceLight;								// Duh
         float effectsDisplayTime = 0.2f;                // The proportion of the timeBetweenBullets that the effects will display for.
 
@@ -30,14 +30,10 @@ namespace CompleteProject
             gunParticles = GetComponent<ParticleSystem>();
             gunLine = GetComponent<LineRenderer>();
             gunAudio = GetComponent<AudioSource>();
-         
+            gunLight = GetComponent<Light>();
             //faceLight = GetComponentInChildren<Light> ();
         }
 
-        void Start()
-        {
-            gunParticles.Stop();
-        }
 
         void Update()
         {
@@ -104,15 +100,12 @@ namespace CompleteProject
             // Perform the raycast against gameobjects on the shootable layer and if it hits something...
             if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
             {
-
-              
                 // Try and find an EnemyHealth script on the gameobject hit.
-                EnemyHealth enemyHealth = shootHit.collider.gameObject.transform.parent.GetComponent<EnemyHealth>();
+                EnemyHealth enemyHealth = shootHit.collider.GetComponent<EnemyHealth>();
 
                 // If the EnemyHealth component exist...
                 if (enemyHealth != null)
                 {
-                    print("hit something");
                     // ... the enemy should take damage.
                     enemyHealth.TakeDamage(damagePerShot, shootHit.point);
                 }
