@@ -107,7 +107,7 @@ namespace CompleteProject
 
               
                 // Try and find an EnemyHealth script on the gameobject hit.
-                EnemyHealth enemyHealth = shootHit.collider.gameObject.transform.parent.GetComponent<EnemyHealth>();
+                EnemyHealth enemyHealth = shootHit.collider.gameObject.transform.parent.GetComponentInParent<EnemyHealth>();
 
                 // If the EnemyHealth component exist...
                 if (enemyHealth != null)
