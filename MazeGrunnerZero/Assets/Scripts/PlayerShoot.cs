@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 
-namespace CompleteProject
+public class PlayerShoot : MonoBehaviour
 {
-    public class PlayerShoot : MonoBehaviour
-    {
         public int damagePerShot = 20;                  // The damage inflicted by each bullet.
         public float timeBetweenBullets = 0.15f;        // The time between each shot.
         public float range = 100f;                      // The distance the gun can fire.
@@ -127,5 +125,4 @@ namespace CompleteProject
                 gunLine.SetPosition(1, shootRay.origin + shootRay.direction * range);
             }
         }
-    }
 }
