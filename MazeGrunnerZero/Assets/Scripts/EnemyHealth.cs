@@ -1,34 +1,36 @@
 ﻿using UnityEngine;
 
-namespace CompleteProject
+
+public class EnemyHealth : MonoBehaviour
 {
-    public class EnemyHealth : MonoBehaviour
-    {
         public int startingHealth = 100;            // The amount of health the enemy starts the game with.
         public int currentHealth;                   // The current health the enemy has.
         public float sinkSpeed = 2.5f;              // The speed at which the enemy sinks through the floor when dead.
         public int scoreValue = 10;                 // The amount added to the player's score when the enemy dies.
         public AudioClip deathClip;                 // The sound to play when the enemy dies.
+        public bool lastWolf;
 
+        private LevelManager level;
 
         Animator anim;                              // Reference to the animator.
         AudioSource enemyAudio;                     // Reference to the audio source.
-        ParticleSystem hitParticles;                // Reference to the particle system that plays when the enemy is damaged.
+        public ParticleSystem hitParticles;                // Reference to the particle system that plays when the enemy is damaged.
         CapsuleCollider capsuleCollider;            // Reference to the capsule collider.
         bool isDead;                                // Whether the enemy is dead.
         bool isSinking;                             // Whether the enemy has started sinking through the floor.
 
-
+       
         void Awake()
         {
             // Setting up the references.
             anim = GetComponent<Animator>();
             enemyAudio = GetComponent<AudioSource>();
-            hitParticles = GetComponentInChildren<ParticleSystem>();
-            capsuleCollider = GetComponent<CapsuleCollider>();
+            
+            capsuleCollider = GetComponentInChildren<CapsuleCollider>();
 
-            // Setting the current health when the enemy first spawns.
-            currentHealth = startingHealth;
+        // Setting the current health when the enemy first spawns.
+        currentHealth = startingHealth;
+        level = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>();
         }
 
 
@@ -84,6 +86,9 @@ namespace CompleteProject
             // Tell the animator that the enemy is dead.
             anim.SetTrigger("Dead");
 
+              // Increase the score by the enemy's score value.
+            level.UpdateScore(scoreValue);
+
             // Change the audio clip of the audio source to the death clip and play it (this will stop the hurt clip playing).
             enemyAudio.clip = deathClip;
             enemyAudio.Play();
@@ -101,11 +106,7 @@ namespace CompleteProject
             // The enemy should no sink.
             isSinking = true;
 
-            // Increase the score by the enemy's score value.
-            //ScoreManager.score += scoreValue;
-
             // After 2 seconds destory the enemy.
             Destroy(gameObject, 2f);
         }
-    }
 }
